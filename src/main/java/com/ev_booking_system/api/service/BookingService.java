@@ -108,22 +108,34 @@ public class BookingService {
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
     }
     
-    // Get user bookings
-    public List<BookingModel> getUserBookings(String userId, String status) {
-        if (status == null) {
-            return bookingRepo.findByUserId(userId);
+   /*  // Get user bookings
+    public List<BookingModel> getUserBookings(String token, String status) {
+
+        if (token != null && token.startsWith("Bearer ")) {
+            token = token.substring(7);
         }
 
-        if (status.equals("upcoming")) {
-            return bookingRepo.findByUserIdAndStatus(userId, BookingStatus.CONFIRMED);
+        String userId = jwtUtil.extractUserId(token);
+
+        if (status != null && !status.isEmpty()) {
+
+            try {
+                BookingStatus bookingStatus =
+                        BookingStatus.valueOf(status.toUpperCase());
+    
+                return bookingRepo.findByUserIdAndStatus(userId, bookingStatus);
+    
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Invalid booking status: " + status);
+            }
         }
 
-        if (status.equals("past")) {
-            return bookingRepo.findByUserIdAndStatus(userId, BookingStatus.COMPLETED);
+        if (status != null && !status.isEmpty()) {
+            return bookingRepo.findByUserIdAndStatus(userId, status);
         }
 
         return bookingRepo.findByUserId(userId);
-    }
+    }*/
 
     // Cancel booking
     public BookingModel cancelBooking(String bookingId, String reason) {
