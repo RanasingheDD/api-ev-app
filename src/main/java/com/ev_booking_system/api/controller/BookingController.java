@@ -44,15 +44,14 @@ public class BookingController {
     }
 
     @GetMapping
-   
-   /*  public ResponseEntity<?> getUserBookings(
+     public ResponseEntity<?> getUserBookings(
             @RequestParam(required = false) String status,
             @RequestHeader("Authorization") String token
     ) {
         return ResponseEntity.ok(
-                Map.of("bookings", bookingService.getUserBookings(token, status))
+                Map.of("bookings", service.getUserBookings(token, status))
         );
-    }*/
+    }
     
     @PostMapping("/{id}/cancel")
     public BookingModel cancel(@PathVariable String id, @RequestBody Map<String, String> body) {

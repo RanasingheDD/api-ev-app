@@ -25,7 +25,7 @@ public class UserService {
     @Autowired
     private JwtUtil jwtUtil;
     
-    public List<UserDto> getCurrentUserFromToken(String token) {
+    public UserDto getCurrentUserFromToken(String token) {
     try {
 
         if (token != null && token.startsWith("Bearer ")) {
@@ -33,22 +33,23 @@ public class UserService {
         }
 
         String userId = jwtUtil.extractUserId(token); 
-        return userRepository.findById(userId).stream()
-                .map(user -> {
-                    UserDto dto = new UserDto();
-                    dto.setId(user.getId());
-                    dto.setName(user.getName());
-                    dto.setEmail(user.getEmail());
-                    dto.setPhone(user.getPhone());
-                    dto.setRole(user.getRole());
-                    dto.setCreatedAt(user.getCreatedAt());
-                    return dto;
-                })
-                .collect(Collectors.toList());
+
+        UserModel user = userRepository.findById(userId)
+        .orElseThrow(() -> new RuntimeException("User not found"));
+
+        UserDto dto = new UserDto();
+        dto.setId(user.getId());
+        dto.setName(user.getName());
+        dto.setEmail(user.getEmail());
+        dto.setPhone(user.getPhone());
+        dto.setRole(user.getRole());
+        dto.setCreatedAt(user.getCreatedAt());
+
+        return dto;   // <-- return SINGLE object
 
     } catch (Exception e) {
         e.printStackTrace();   // <--- print exception!
-        return Collections.emptyList();
+        return null;
     }
 }
 

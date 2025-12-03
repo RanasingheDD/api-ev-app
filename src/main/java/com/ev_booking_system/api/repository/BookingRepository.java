@@ -29,7 +29,4 @@ public interface BookingRepository extends MongoRepository<BookingModel, String>
             Instant startAt,
             Instant endAt
     );
-
-
-
 }

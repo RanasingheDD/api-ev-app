@@ -108,7 +108,7 @@ public class BookingService {
                 .orElseThrow(() -> new RuntimeException("Booking not found"));
     }
     
-   /*  // Get user bookings
+   // Get user bookings
     public List<BookingModel> getUserBookings(String token, String status) {
 
         if (token != null && token.startsWith("Bearer ")) {
@@ -116,7 +116,7 @@ public class BookingService {
         }
 
         String userId = jwtUtil.extractUserId(token);
-
+        System.out.println(userId);
         if (status != null && !status.isEmpty()) {
 
             try {
@@ -130,19 +130,15 @@ public class BookingService {
             }
         }
 
-        if (status != null && !status.isEmpty()) {
-            return bookingRepo.findByUserIdAndStatus(userId, status);
-        }
-
         return bookingRepo.findByUserId(userId);
-    }*/
+    }
 
     // Cancel booking
     public BookingModel cancelBooking(String bookingId, String reason) {
         BookingModel booking = getById(bookingId);
 
         booking.setStatus(BookingStatus.CANCELLED);
-        booking.setFinalCost(0.0);
+        booking.setFinalCost(booking.getFinalCost());
 
         return bookingRepo.save(booking);
     }

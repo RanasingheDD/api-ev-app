@@ -4,6 +4,10 @@ import com.ev_booking_system.api.dto.LoginRequest;
 import com.ev_booking_system.api.model.UserModel;
 import com.ev_booking_system.api.repository.UserRepository;
 import com.ev_booking_system.api.filter.JwtUtil;
+
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +22,9 @@ public class AuthController {
 
     @Autowired
     private JwtUtil jwtUtil;
+
+    
+    private Set<String> blacklistedTokens = ConcurrentHashMap.newKeySet();
 
     @PostMapping("/register")
     public ResponseEntity<?> registerUser(@RequestBody UserModel user) {
@@ -45,6 +52,15 @@ public class AuthController {
         String refreshToken = jwtUtil.generateRefreshToken(user.getId());
 
         return ResponseEntity.ok(new AuthResponse(accessToken, refreshToken));
+    }
+
+    @PostMapping("/auth/logout")
+    public ResponseEntity<?> logout(@RequestHeader("Authorization") String authHeader) {
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            String token = authHeader.substring(7);
+            blacklistedTokens.add(token); // Add token to blacklist
+        }
+        return ResponseEntity.ok("Logged out successfully");
     }
 }
 

@@ -31,7 +31,7 @@ public class UserController {
     }
 
     @GetMapping("/me")
-    public List<UserDto> getCurrentUser(@RequestHeader("Authorization") String token){
+    public UserDto getCurrentUser(@RequestHeader("Authorization") String token){
         return userService.getCurrentUserFromToken(token);
     }
     
