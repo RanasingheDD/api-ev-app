@@ -1,7 +1,9 @@
 package com.ev_booking_system.api.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.ev_booking_system.api.dto.EvDto;
 import com.ev_booking_system.api.dto.UserDto;
@@ -24,6 +26,17 @@ public class UserService {
     private EvRepository evRepository;
     @Autowired
     private JwtUtil jwtUtil;
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+    public ResponseEntity<?> register(UserModel user){
+        if (userRepository.existsByEmail(user.getEmail())) {
+            return ResponseEntity.badRequest().body("Email already exists");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+        return ResponseEntity.ok("Register successfully");
+    }
     
     public UserDto getCurrentUserFromToken(String token) {
     try {
@@ -41,8 +54,9 @@ public class UserService {
         dto.setId(user.getId());
         dto.setName(user.getName());
         dto.setEmail(user.getEmail());
-        dto.setPhone(user.getPhone());
+        dto.setMobile(user.getMobile());
         dto.setRole(user.getRole());
+        dto.setPoints(user.getPoints());
         dto.setCreatedAt(user.getCreatedAt());
 
         return dto;   // <-- return SINGLE object
@@ -111,7 +125,7 @@ public class UserService {
         }
 
         if (phone != null && !phone.isEmpty()) {
-            user.setPhone(phone);
+            user.setMobile(phone);
         }
 
         // Save user
@@ -121,7 +135,7 @@ public class UserService {
         UserDto dto = new UserDto();
         dto.setId(saved.getId());
         dto.setName(saved.getName());
-        dto.setPhone(saved.getPhone());
+        dto.setMobile(saved.getMobile());
 
         return dto;
 
