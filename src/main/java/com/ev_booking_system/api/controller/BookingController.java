@@ -4,12 +4,10 @@ package com.ev_booking_system.api.controller;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.ev_booking_system.api.dto.BookingDto;
 import com.ev_booking_system.api.dto.BookingQuoteDto;
 import com.ev_booking_system.api.model.BookingModel;
 import com.ev_booking_system.api.service.BookingService;
 import org.springframework.http.ResponseEntity;
-import com.ev_booking_system.api.model.BookingStatus;
 
 import java.time.Instant;
 import java.util.*;
