@@ -15,7 +15,8 @@ public class UserDto {
     private String id;
     private String name;
     private String email;
-    private String phone;
+    private String Mobile;
     private Role role; // USER, OWNER, ADMIN
+    private int points;
     private Date createdAt;
 }
