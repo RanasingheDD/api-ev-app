@@ -19,9 +19,10 @@ public class UserModel {
     private String id;
     private String name;
     private String email;
-    private String phone;
+    private String mobile;
     private String password;
     private Role role; // USER, OWNER, ADMIN
+    private int points;
     private Date createdAt;
 
     public void setRole(String user) {
